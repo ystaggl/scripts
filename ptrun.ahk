@@ -6,6 +6,11 @@ SendMode Input
 ;-----------------------------------------;
 ; Use PowerToysRun as a replacement for Start Menu
 
+LockKey := "Scrolllock"
+; Important: Allows Win Key Hotkeys to work
+LWin & ScrollLock::
+Return
+
 *LWin::SendInput, {Blind}{vk00}{Lwin Down} ; Added {Blind} so it doesn't force release keys to push down, just a safety precaution
 Return
 
@@ -23,18 +28,15 @@ Return
     if (!WinActive("ahk_exe Microsoft.CmdPal.UI.exe") && !WinActive("ahk_exe PowerToys.PowerLauncher.exe")) {
         WinGetClass, windowClass, A
     	WinActivate, ahk_class Progman
-    } ; closing ptrun
+    }
+    ; closing ptrun
     else {
         WinActivate, ahk_class windowClass
-        SendInput {vk00}{LWin Down}{Numlock Down}{vk00}{LWin Up}{Numlock Up} ; Launch PowerRun
+        SendInput {vk00}{LWin Down}{%LockKey% Down}{vk00}{LWin Up}{%LockKey% Up} ; Launch PowerRun
         SendInput, {vk00}{LWin Up}
         return
     }
-    SendInput {vk00}{LWin Down}{Numlock Down}{vk00}{LWin Up}{Numlock Up} ; Launch PowerRun
+    SendInput {vk00}{LWin Down}{%LockKey% Down}{vk00}{LWin Up}{%LockKey% Up} ; Launch PowerRun
     SendInput, {vk00}{LWin Up}
 
     Return
-
-; Important: Allows Win Key Hotkeys to work
-LWin & Numlock::
-Return
